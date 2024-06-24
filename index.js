@@ -1,5 +1,7 @@
 const { ChatOpenAI } = require('@langchain/openai')
 const { prompts } = require('./prompt')
+const Fastify = require('fastify')
+const fastify = Fastify({ logger: true })
 
 async function code2bench(code, extension) {
   const model = new ChatOpenAI({
@@ -7,33 +9,34 @@ async function code2bench(code, extension) {
     maxRetries: 10,
     maxConcurrency: 5,
     temperature: 0,
-    openAIApiKey: process.env.OPENAPI_KEY,
+    openAIApiKey: process.env.OPENAI_KEY,
     model: 'gpt-3.5-turbo',
   })
   const prompt = prompts(code, extension);
   const { content } = await model.invoke(prompt);
-  console.log(content)
+  return content;
 }
 
-code2bench(
-  `
-void FreeRecursivelyNode(
-    node::permission::FSPermission::RadixTree::Node* node) {
-  if (node == nullptr) {
-    return;
-  }
-
-  if (node->children.size()) {
-    for (auto& c : node->children) {
-      FreeRecursivelyNode(c.second);
+fastify.post('/', {
+  schema: {
+    body: {
+      type: 'object',
+      properties: {
+        extension: { type: 'string' },
+        code: { type: 'string' },
+      },
+      required: ['extension', 'code']
     }
   }
+}, async (req, reply) => {
+  const bench = await code2bench(req.body.code, req.body.extension);
+  return { bench };
+})
 
-  if (node->wildcard_child != nullptr) {
-    delete node->wildcard_child;
-  }
-  delete node;
+if (require.main === module) {
+  fastify.listen({ port: 3000 })
 }
-  `,
-  'cpp'
-)
+
+module.exports = {
+  code2bench,
+};
