@@ -19,6 +19,6 @@ void FSPermission::Apply(Environment* env,
     GrantAccess(scope, PathResolve(env, {res}));
   }
 }
-`
+`;
 code2bench(cppCode, 'cpp')
-.then(console.log)
+.then(console.log);
