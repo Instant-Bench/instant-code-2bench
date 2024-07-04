@@ -30,7 +30,7 @@ fastify.post('/', {
   }
 }, async (req, reply) => {
   const bench = await code2bench(req.body.code, req.body.extension);
-  return { bench };
+  return bench;
 })
 
 if (require.main === module) {
