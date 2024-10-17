@@ -29,32 +29,31 @@ Here is the C++ code:
 I have a piece of JavaScript code, and I need to create a benchmark for it. Please generate a complete benchmark file with the necessary templating. Here are the requirements:
 
 1. Assume all necessary values: If any values or configurations are missing from the provided code, assume appropriate default values.
-2. Use the benchmarking framework require('tinybench').
+2. Use the benchmarking framework require('bench-node').
 3. Generate sample data for the benchmarks.
 4. Include all necessary classes: Define any missing classes, or structures needed for the code to run.
-5. Do not import non standard libraries other than tinybench. If the code contains classes or functions that weren't declared, create it assuming empty values or default values
-6. The output must be only the javascript code. Do not include any message other than the code. The format returned must be string. Do not return markdown such as \`\`\`javascrit
+5. Do not import non standard libraries other than bench-node. If the code contains classes or functions that weren't declared, create it assuming empty values or default values
+6. The output must be only the javascript code. Do not include any message other than the code. The format returned must be string. Do not return markdown such as \`\`\`javascript
 
-This is the tinybench API:
+This is the bench-node documentation:
 
 \`\`\`
-import { Bench } from 'tinybench';
+const { Suite } = require('bench-node');
 
-const bench = new Bench({ time: 100 });
+const suite = new Suite();
 
-bench
-  .add('faster task', () => {
-    console.log('I am faster')
-  })
-  .add('slower task', async () => {
-    await new Promise(r => setTimeout(r, 1)) // we wait 1ms :)
-    console.log('I am slower')
-  })
+suite.add('Using delete property', () => {
+  const data = { x: 1, y: 2, z: 3 };
+  delete data.y;
 
-await bench.warmup(); // make results more reliable
-await bench.run();
+  data.x;
+  data.y;
+  data.z;
+});
 
-console.table(bench.table());
+suite.run();
+
+// $ node --allow-natives-syntax my-benchmark.js
 \`\`\`
 
 Here is the JavaScript code:
