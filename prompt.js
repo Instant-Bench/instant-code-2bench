@@ -53,7 +53,7 @@ suite.add('Using delete property', () => {
 
 suite.run();
 
-// $ node --allow-natives-syntax bench.mjs
+// $ node --allow-natives-syntax bench.js <--- include this comment
 \`\`\`
 
 Remember to use multiple .add() for different data samples, example:
