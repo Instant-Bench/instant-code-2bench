@@ -53,9 +53,29 @@ suite.add('Using delete property', () => {
 
 suite.run();
 
-// $ node --allow-natives-syntax my-benchmark.js
+// $ node --allow-natives-syntax bench.mjs
 \`\`\`
 
+Remember to use multiple .add() for different data samples, example:
+
+\`\`\`
+suite.add('Using delete property', () => {
+  const data = { x: 1, y: 2, z: 3 };
+  delete data.y;
+
+  data.x;
+  data.y;
+  data.z;
+})
+.add('Using undefined assignment', () => {
+  const data = { x: 1, y: 2, z: 3 };
+  delete undefined;
+
+  data.x;
+  data.y;
+  data.z;
+});
+\`\`\`
 Here is the JavaScript code:
 
 \`\`\`${code}\`\`\``
