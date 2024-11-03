@@ -3,6 +3,14 @@ const { prompts } = require('./prompt')
 const Fastify = require('fastify')
 const fastify = Fastify({ logger: true })
 
+if (!process.env.OPENAI_KEY) {
+  throw new Error('Missing OPENAI_KEY env');
+}
+
+if (!process.env.API_KEY) {
+  throw new Error('Missing API_KEY env');
+}
+
 async function code2bench(code, extension) {
   const model = new ChatOpenAI({
     streaming: true,
@@ -16,6 +24,17 @@ async function code2bench(code, extension) {
   const { content } = await model.invoke(prompt);
   return content;
 }
+const API_KEY = process.env.API_KEY;
+
+async function auth(request, reply) {
+  const apiKey = request.headers['x-api-key'];
+
+  if (apiKey !== API_KEY) {
+    return reply.code(401).send({ error: 'Unauthorized' });
+  }
+}
+
+fastify.addHook('preHandler', auth);
 
 fastify.post('/', {
   schema: {
