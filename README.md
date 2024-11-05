@@ -32,7 +32,7 @@ $ npm install
 To start the API server, set your OpenAI API key as an environment variable and run the following command:
 
 ```bash
-$ OPENAI_KEY=your_openai_api_key node index.js
+$ API_KEY=SERVER_API_KEY OPENAI_KEY=your_openai_api_key node index.js
 ```
 
 Replace `your_openai_api_key` with your actual OpenAI API key.
