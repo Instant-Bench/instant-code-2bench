@@ -15,7 +15,7 @@ Ensure you have the following:
 First, clone the repository and navigate to the project directory:
 
 ```bash
-$ git clone <repository-url>
+$ git clone git@github.com:Instant-Bench/instant-code2bench.git
 $ cd instant-code2bench
 ```
 
